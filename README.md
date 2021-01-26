@@ -12,11 +12,11 @@ We aspire to provide the following
 ## multi-dimensional frequency resolved measurement
 The simplest example of a multi-dimensional measurement, is the complete frequency resolution between TV/linear and digital viewership. For an example, the following the the (n, m)-reach for the frequencies n for digital and m for linear for a typical report.
 
-<img src="./img/2D_reach_synthetic" alt="real_rf" width="250"/>
+<img src="./img/2D_reach_synthetic.png" alt="synthetic" width="250"/>
 
 using a virtual society mapping tailored for this report we can get a reach and frequency surface as follows
 
-<img src="./img/2D_reach_VID_assignment" alt="virtual_rf" width="250"/>
+<img src="./img/2D_reach_VID_assignment.png" alt="VID_assignment" width="250"/>
 
 ## The virtual people, a generic model
 Virtual people are fictitious IDs (numbers) that are possibly equipped with demographics and interests as well as the probability of exposure (activity) in each media. They match the total number as well as the statistical charactristics of the census, and their activities mimics the reach and frequency of the real advertising campaigns. It should not come as a surprise that a model of virtual people should either be almost exactly the actual people (leading exactly correct deduplicated reach and frequency if all people are observed) or is so generic that leads to large errors in measurement, therefor rendering it almost useless.
