@@ -195,23 +195,23 @@ class RFReport(AbstractRFReport) :
             return result
 
 
-    def remove_dim(self, dim_name) :
-        """Removes a single dimension of the report and effectively generates a new report with one less dimension.
+    def drop(self, dims) :
+        """Drops or removes dimension(s) of the report and effectively generates a new report with one or more less dimension.
 
         Args:
-            dim_name (string): Name of the column to be removed.
+            dims (string or list of strings): Name of the column(s) to be removed.
 
         Returns:
-            RFReport with one less dimension.
+            RFReport with less dimension.
         """
 
-        if dim_name not in self.dim_cols:
-            raise Exception(f"The to-be-removed dim_column \"{dim_name}\" does not exist.")
+        cols = dims if isinstance(dims, (list, tuple)) else [dims]
+        if not all(c in self.dim_cols for c in cols) :
+            raise Exception(f"One or more of columns {cols} do not exist in {self.dim_cols}.")
 
-        dim_cols = self.dim_cols.copy()
-        dim_cols.remove(dim_name)
+        dim_cols = [c for c in self.dim_cols if c not in cols]
 
-        rfdata = self.rfdata.drop(dim_name, axis=1).groupby(dim_cols).sum().reset_index()
+        rfdata = self.rfdata.drop(dims, axis=1).groupby(dim_cols).sum().reset_index()
 
         return RFReport(rfdata, self.max_freq, dim_cols, self.reach_col, self.population_size)
 
