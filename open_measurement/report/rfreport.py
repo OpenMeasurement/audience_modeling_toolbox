@@ -70,7 +70,7 @@ class RFReport(AbstractRFReport) :
         for col in dim_cols :
             rfdata[col]  = np.where(rfdata[col] >= max_freq, max_freq, rfdata[col])
 
-        rfdata = rfdata.groupby(dim_cols).sum().reset_index()
+        rfdata = rfdata.groupby(dim_cols)[reach_col].sum().reset_index()
 
         # Make sure all frequencies upto max_freq exist
         rfdata = (
