@@ -9,8 +9,52 @@ We aspire to provide the following
  * A completely open framework, to test, verify, and utilize by all the parties
  * A flexible methodology, to take into account the desired measurement quantities, advertising patterns, targetted audience, as well as the fundamental difference between different type of impressions.
 
-## multi-dimensional frequency resolved measurement
-The simplest example of a multi-dimensional measurement, is the complete frequency resolution between TV/linear and digital viewership. For an example, the following the the (n, m)-reach for the frequencies n for digital and m for linear for a typical report.
+# The virtual society framework for cross-screen measurement
+
+Virtual people are fictitious IDs (numbers) that are possibly equipped with demographics and interests as well as the probability of exposure (activity) in each media. They match the total number as well as the statistical charactristics of the census, and their activities mimics the reach and frequency of the real advertising campaigns. It should not come as a surprise that a model of virtual people should either be almost exactly the actual people (leading exactly correct deduplicated reach and frequency if all people are observed) or is so generic that leads to large errors in measurement, therefor rendering it almost useless.
+
+We believe that a flexible methodology is only possible if a specific virtual society is tweaked and designed for each purpose separately. Virtual society is a dataframe of virtual individuals with equipped with certain demographics and/or interestes that have a tendency to receive advertisement thorough different media. This could be the tendency to generte specific cookie types in the case of digital advertising or the tendency to watch a specific network in the case of TV.
+
+The virtual society provides the first level of user privacy as the virtual users do not correspond to actual users, but they only follow the same distribution as of the actual society. Moreover, additional levels of privacy could also be combined with the virtual society approach. Thais means counting and frequency-aware sketches together with differentially private noises could be utilized after the virtual logs are created and before they are combined across different media, in order to reach the desired level of privacy for each
+
+## A recipe to generate a *virtual society*
+
+Below we illustrates the step to create assginment of to virtual societies.
+
+<img src="./img/virtual_assignment.png" alt="virtual_assignment" width="800"/>
+
+
+ - **STEP I)** The starting point is X-media empirical measurement data. This can come from a dedicated X-media measurement panel, or from a pseudo-panel made using identity resolution techniques, assuming that for each measured publisher, at least a fraction of their data has been resolved for the empirical measurement data. The empirical multidimensional measurement has a reach curve.
+
+- **Step II)** The ADF modeling framework then uses the empirical data to model an activity distribution function (ADF). An ADF is a function that captures the rate at which each member of the population or society is exposed to advertisement in each medium. We call the rate of exposure, activity and hence the function is called the activity distribution function. This is the most challenging/technical part of the process. For non-technical audiences, they should not care how this function is modelled as long as the desired accuracy is reached. For further information about this look at the mathematical framework of VID modeling page in the documentation.
+
+It is more accurate to have measurement at different snapshots of time instead of a single measurement at the end of the campaign. This is because it is easier for the modeling to capture the behavior of the society by observing how the frequency distribution grows as a function of time (or more accurately as a function of more impressions). Therefore we advocate for using the time evolution of the reach surface instead of the final result.
+
+- **Step III)** ADF is then utilized by virtual society generators to output the virtual society table. A virtual society is a set of virtual IDs with the corresponding activity (rate of exposure) for each media. An example of a virtual society would look like the below table
+
+| Virtual person ID | Activity on Medium 1 | Activity on Medium 2 | ... | Demographics |
+| -: | :-: | :-: | :-: | :-: |
+| 1 | 0.1 | 1.5 | ... | 18-24 old, Male, White |
+| 2 | 1.3 | 0.2 | ... | 65-74 old, Female, Hispanic |
+| ... | ... | ... | ... | ...|
+
+Each publisher/media has their own activity column. This could in principle be even private and not accessible by other parties.
+The activity function of the virtual society would look like the below picture
+
+- **Step IV)** The publishers/media then use the activity column of the virtual society to assign their impression logs to Virtual persons IDs using deterministic hash functions. Depending on the nature of the virtual society and the modeling, this process provides a first step toward individual user’s privacy and ensures that all the publishers are mapping their impressions to the same exact user space. This is a probabilistic identity resolution scheme that closely follows the content exposure behavior of real society.
+
+- **Step V)** The advertiser receives all the impression logs and deduplicate the virtual IDs to find the multidimensional reach and frequency surface and consequently calculate exclusive reach, total reach, target frequency reach, and other relevant parameters for optimization and further advertising planning.
+
+If you would like to get your hands dirty [try it out for yourself on a google colab notebook]. 
+Want to learn more:  continue reading ...
+
+## Definitions and examples
+### The multidimensional reach surface
+At the core of cross-screen measurement reporting is the concept of the mutidimensional reach surface. A multidimensional reach surface is a granular report of the reach of an advertising campaign as a function of frequency of exposure on each dimenaion (or medium).  The simplest example, is a single dimensional reach and frequency ditribution as in the below plot
+
+<img src="./img/1D_reach_synthetic_data.png" alt="synthetic" width="400"/>
+
+estimation the complete frequency resolution between TV/linear and digital viewership. For an example, the following the the (n, m)-reach for the frequencies n for digital and m for linear for a typical report.
 
 <img src="./img/2D_reach_synthetic_data.png" alt="synthetic" width="400"/>
 
@@ -18,15 +62,13 @@ using a virtual society mapping tailored for this report we can get a reach and 
 
 <img src="./img/2d_reach_VID_assignment.png" alt="VID_assignment" width="400"/>
 
-## The virtual people, a generic model
-Virtual people are fictitious IDs (numbers) that are possibly equipped with demographics and interests as well as the probability of exposure (activity) in each media. They match the total number as well as the statistical charactristics of the census, and their activities mimics the reach and frequency of the real advertising campaigns. It should not come as a surprise that a model of virtual people should either be almost exactly the actual people (leading exactly correct deduplicated reach and frequency if all people are observed) or is so generic that leads to large errors in measurement, therefor rendering it almost useless.
+### The activity distribution function (ADF)
+The acitivty of a normal society 
+<img src="./img/ADF_synthetic.png" alt="synthetic_society_acitivity" width="400"/>
 
+The activity of a virtual society
+<img src="./img/virtual_society_activity.png" alt="virtual_society_activity" width="400"/>
 
-## The case dependent *virtual society*
-A flexible methodology is only possible if a specific virtual society is tweaked and designed for each purpose separately. Virtual society is a dataframe of virtual individuals with equipped with certain demographics and/or interestes that have a tendency to receive advertisement thorough different media. This could be the tendency to generte specific cookie types in the case of digital advertising or the tendency to watch a specific network in the case of TV.
-
-## Privacy as the key to multi-media measurement
-The virtual society provides the first level of user privacy as the virtual users do not correspond to actual users, but they only follow the same  distribution as of the actual society. However, additional levels of privacy could also be combined with the virtual society approach. Thais means counting and frequency-aware sketches together with differentially private noises could be utilized after the virtual logs are created and before they are combined across different media, in order to reach the desired level of privacy for each
 
 ## Code structure and documentation
 Please look at the documentation for the detailed structure of the code.
