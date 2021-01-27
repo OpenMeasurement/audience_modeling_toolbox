@@ -165,8 +165,6 @@ class MixtureADF(AbstractADF) :
         bounds = ([1.0e-5] * self.n_simples + self._parameters_bounds(which="lower"),
                   [1.0]    * self.n_simples + self._parameters_bounds(which="upper"))
 
-        print(x0)
-        print(bounds)
         try:
             result = least_squares(residual_fn, x0=x0, bounds=bounds, max_nfev=5000)
 
