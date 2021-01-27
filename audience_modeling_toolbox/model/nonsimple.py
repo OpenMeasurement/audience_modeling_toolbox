@@ -28,8 +28,8 @@ from scipy.optimize import least_squares
 import itertools
 import warnings
 
-from open_measurement.model.models import AbstractADF, NormalExponentialADF, NormalDeltaADF
-from open_measurement.measure import VirtualSociety
+from audience_modeling_toolbox.model.models import AbstractADF, NormalExponentialADF, NormalDeltaADF
+from audience_modeling_toolbox.measure import VirtualSociety
 
 class MixtureADF(AbstractADF) :
     """Generic class for mixture of simple normalized ADFs

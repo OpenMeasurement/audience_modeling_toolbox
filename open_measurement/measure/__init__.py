@@ -1,1 +1,0 @@
-from open_measurement.measure.virtualsociety import VirtualSociety

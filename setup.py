@@ -4,19 +4,19 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="open_measurement",
+    name="audience_modeling_toolbox",
     version="0.0.1",
     author="Amir M Aghaei",
     author_email="amaghaei@videoamp.com",
     package_dir={
-        'open_measurement': 'open_measurement'
+        'audience_modeling_toolbox': 'audience_modeling_toolbox'
     },
     packages=[
-        "open_measurement",
-        "open_measurement.measure",
-        "open_measurement.model",
-        "open_measurement.report",
-        "open_measurement.synthesize",
+        "audience_modeling_toolbox",
+        "audience_modeling_toolbox.measure",
+        "audience_modeling_toolbox.model",
+        "audience_modeling_toolbox.report",
+        "audience_modeling_toolbox.synthesize",
     ],
     description="The cross media measurement with virtual society.",
     long_description=long_description,
