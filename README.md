@@ -20,7 +20,9 @@ The virtual society provides the first level of user privacy as the virtual user
 
 ## A recipe to generate a *virtual society*
 
-Below we illustrates the step to create assginment of to virtual societies.
+_**Want to skip and get your hands dirty instead:** [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/showcase.ipynb)._
+
+Below we illustrates the step to create assginment of to virtual societies. 
 
 <img src="./img/virtual_assignment.png" alt="virtual_assignment" width="800"/>
 
@@ -46,8 +48,7 @@ The activity function of the virtual society would look like the below picture
 
 - **Step V)** The advertiser receives all the impression logs and deduplicate the virtual IDs to find the multidimensional reach and frequency surface and consequently calculate exclusive reach, total reach, target frequency reach, and other relevant parameters for optimization and further advertising planning.
 
-If you would like to get your hands dirty [try it out for yourself on a google colab notebook]. 
-Want to learn more:  continue reading ...
+**Want to learn more:**  continue reading ...
 
 ## Definitions and examples
 ### The multidimensional reach surface
