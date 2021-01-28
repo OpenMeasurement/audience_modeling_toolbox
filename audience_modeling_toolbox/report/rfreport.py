@@ -252,6 +252,70 @@ class RFReport(AbstractRFReport) :
             ax=ax
         )
 
+    def compare_dims(self, other_report) :
+        """Compare the reach, exclusive reach, and overlap along different dimensions
+
+        Args:
+            other_report (RFReport): The other report to compare with
+
+        Returns:
+            Pandas dataframe of percentage erros in comparison.
+        """
+
+        if self.dim_cols != other_report.dim_cols :
+            raise Exception("The two reports do not have the same dims.")
+
+        if self.population_size != other_report.population_size :
+            raise Exception("The two reports don't have the same population size.")
+
+        report_data_1 = self.pivot_to_dim_cols(max_freq=1).values.astype('int')
+        report_data_2 = other_report.pivot_to_dim_cols(max_freq=1).values.astype('int')
+
+        zero_index = [0 for d in self.dim_cols]
+        report_data_1[tuple(zero_index)] = self.population_size - report_data_1[tuple(zero_index)]
+        report_data_2[tuple(zero_index)] = self.population_size- report_data_2[tuple(zero_index)]
+
+        error_2_percentages = np.round(100*(report_data_1 - report_data_2) / report_data_1, decimals=2)
+
+        # total reach
+        df = pd.DataFrame([[
+            "Total reach of all media",
+            report_data_1[tuple(zero_index)],
+            report_data_2[tuple(zero_index)],
+            error_2_percentages[tuple(zero_index)]]],
+                          columns=['Quantity', 'report_1', 'report_2', 'Relative percentage error'])
+
+        # exclusive reach
+        for i, dim in enumerate(self.dim_cols):
+            index = zero_index.copy()
+            index[i] = 1
+            index = tuple(index)
+            df.loc[df.index.max()+1] = [
+                f"Exclusive reach on {dim}",
+                report_data_1[index],
+                report_data_2[index],
+                error_2_percentages[index]
+            ]
+
+        # mutual overlap
+        for indices in itertools.combinations(range(self.n_dims), 2):
+            index = zero_index.copy()
+            ms = []
+            for i in indices:
+                index[i] = 1
+                ms.append(self.dim_cols[i])
+            index = tuple(index)
+            print(index)
+            df.loc[df.index.max()+1] = [
+                f"Overalp of {ms[0]} and {ms[1]}",
+                report_data_1[index],
+                report_data_2[index],
+                error_2_percentages[index]
+            ]
+
+        return df
+
+
 def generate_report(impressions, population_size, max_freq, id_col="user_id", media_col="media") :
     """Generates a mutli-dim reach and frequency report from the table of impressions (event logs)
 
