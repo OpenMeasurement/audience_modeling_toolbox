@@ -13,15 +13,14 @@ setuptools.setup(
     },
     packages=[
         "audience_modeling_toolbox",
-        "audience_modeling_toolbox.measure",
-        "audience_modeling_toolbox.model",
+        "audience_modeling_toolbox.audience",
         "audience_modeling_toolbox.report",
-        "audience_modeling_toolbox.synthesize",
+        "audience_modeling_toolbox.model"
     ],
     description="The cross media measurement with virtual society.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    #url="",
+    url="https://github.com/OpenMeasurement/audience_modelling_toolbox",
     license='MIT',
     python_requires='>=3.6',
     install_requires=[
