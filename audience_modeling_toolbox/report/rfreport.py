@@ -1,6 +1,6 @@
 # MIT License
 
-# Copyright (c) 2020 OpenMeasurement
+# Copyright (c) 2021 OpenMeasurement
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,13 @@
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from abc import ABC, abstractmethod
 import itertools
 import warnings
+
+from audience_modeling_toolbox.plotting import _plot_2d_reach
 
 class AbstractRFReport(ABC) :
     """Abstract class for reach and frequency (RF) reports
@@ -211,10 +214,33 @@ class RFReport(AbstractRFReport) :
 
         dim_cols = [c for c in self.dim_cols if c not in cols]
 
+        if dim_cols == self.dim_cols :
+            return self
+
         rfdata = self.rfdata.drop(dims, axis=1).groupby(dim_cols).sum().reset_index()
 
         return RFReport(rfdata, self.max_freq, dim_cols, self.reach_col, self.population_size)
 
+
+    def plot_2d_reach(self, dims, ax=None) :
+        """Plot the two dimenaional reach surface along the given dims
+
+        Args:
+            dims (list of two columns): The two columns along which to plot the reach surface.
+            ax (matplotlib axis): axis to plot on.
+
+        Return:
+            A matplotlib ax with the plotted reach surface
+        """
+
+        if len(dims) != 2 or not all([d in self.dim_cols for d in dims]) :
+            raise Exception(f"dims {dims} is not good.")
+
+        return _plot_2d_reach(
+            self.drop([d for d in self.dim_cols if d not in dims]).pivot_to_dim_cols().values,
+            dims,
+            ax=ax
+        )
 
 def generate_report(impressions, population_size, max_freq, id_col="user_id", media_col="media") :
     """Generates a mutli-dim reach and frequency report from the table of impressions (event logs)

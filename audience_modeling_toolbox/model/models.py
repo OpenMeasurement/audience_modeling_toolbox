@@ -26,6 +26,8 @@ from scipy import special
 import itertools
 from abc import ABC, abstractmethod
 
+from audience_modeling_toolbox.plotting import _plot_2d_reach
+
 class AbstractADF(ABC):
 
     @abstractmethod
@@ -60,7 +62,6 @@ class AbstractADF(ABC):
         )
 
     def fplus_reach(self, grs, freqs) :
-
         """Calculates the reach_plus as a function of frequencies.
 
         Args:
@@ -115,6 +116,30 @@ class AbstractADF(ABC):
                     R[n_gr, n_freq, n_dim] = R_truncate[n_gr, 0, n_dim]
 
         return np.prod(R, axis=2)
+
+    def plot_2d_reach(self, gr_values, dim_cols, max_freq, population_size, ax=None) :
+        """Plot a two dimensional reach surface generated from adf reach function
+
+        Args:
+            gr_values (): The gross rating values to plot the reach function with.
+            dim_cols (): The two dimensions to keep and plot.
+            max_freq (): The maximum frequency to truncate from in the reach surface.
+            population_size (): The size of the population to scale the reach function to.
+            ax (): axis
+
+        Returns:
+            Axis with the reach plotted.
+        """
+
+        if self.n_dims != 2 :
+            raise Exception("Plotting two dimensional reach is only supported for two dimesional ADFs")
+
+        return _plot_2d_reach(
+            (
+                self.ftrunc_reach(gr_values, max_freq=max_freq) * population_size
+            ).reshape([max_freq+1, max_freq+1]),
+            dim_cols, ax=ax
+        )
 
 class NormalExponentialADF(AbstractADF) :
     """The class for normalized simple exponential ADF."""
