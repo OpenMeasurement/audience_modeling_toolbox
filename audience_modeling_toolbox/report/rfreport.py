@@ -28,7 +28,7 @@ from abc import ABC, abstractmethod
 import itertools
 import warnings
 
-from audience_modeling_toolbox.plotting import _plot_2d_reach
+from audience_modeling_toolbox.plotting import _plot_1d_reach, _plot_2d_reach
 
 class AbstractRFReport(ABC) :
     """Abstract class for reach and frequency (RF) reports
@@ -221,6 +221,16 @@ class RFReport(AbstractRFReport) :
 
         return RFReport(rfdata, self.max_freq, dim_cols, self.reach_col, self.population_size)
 
+
+    def plot_1d_reach(self, dim, ax=None) :
+        if dim not in self.dim_cols:
+            raise Exception(f"The dim {dim} does not exist.")
+
+        return _plot_1d_reach(
+            self.drop([d for d in self.dim_cols if d != dim]).rfdata[self.reach_col].values,
+            dim,
+            ax=ax
+        )
 
     def plot_2d_reach(self, dims, ax=None) :
         """Plot the two dimenaional reach surface along the given dims

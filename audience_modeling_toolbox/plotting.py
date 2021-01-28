@@ -20,8 +20,36 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+
+def _log_colormap(x, vmin, vmax, cmap=matplotlib.cm.viridis) :
+    norm = matplotlib.colors.LogNorm(vmin=vmin, vmax=vmax)
+    return cmap(norm(x))
+
+def _freq_ticks(max_freq=20, jump=2) :
+    tickrange = range(0, max_freq+1, jump)
+    ticklabels = [str(i) for i in range(0, max_freq, jump)]
+    ticklabels[-1] = ticklabels[-1] + "+"
+    return tickrange, ticklabels
+
+def _plot_1d_reach(data, dim, ax) :
+    if ax is None:
+        fig, ax = plt.subplots()
+
+    data_size = len(data)
+    tickrange, ticklabels = _freq_ticks(max_freq=data_size, jump=2)
+
+    ax.bar(np.arange(data_size), data,
+           color=[_log_colormap(v, vmin=1, vmax=np.max(data)) for v in data])
+    ax.set_xlabel(dim)
+    ax.set_ylabel("Reach")
+    ax.set_yscale("log")
+    ax.set_xticks(tickrange)
+    ax.set_xticklabels(ticklabels)
+
+    return ax
 
 def _plot_2d_reach(data, dims, ax=None) :
 
@@ -29,10 +57,7 @@ def _plot_2d_reach(data, dims, ax=None) :
         fig, ax = plt.subplots()
 
     data_size = data.shape[0]
-    freq_label_jump = 2
-    tickrange = range(0, data_size+1, freq_label_jump)
-    ticklabels = [str(i) for i in range(0, 21, freq_label_jump)]
-    ticklabels[-1] = ticklabels[-1] + "+"
+    tickrange, ticklabels = _freq_ticks(max_freq=data_size, jump=2)
 
     im = ax.imshow(data,
                    norm=matplotlib.colors.LogNorm(),
