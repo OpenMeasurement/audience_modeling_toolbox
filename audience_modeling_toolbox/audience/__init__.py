@@ -1,0 +1,2 @@
+from audience_modeling_toolbox.audience.virtualsociety import VirtualSociety
+from audience_modeling_toolbox.audience.synthesizer import *

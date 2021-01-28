@@ -29,7 +29,7 @@ import itertools
 import warnings
 
 from audience_modeling_toolbox.model.models import AbstractADF, NormalExponentialADF, NormalDeltaADF
-from audience_modeling_toolbox.measure import VirtualSociety
+from audience_modeling_toolbox.audience import VirtualSociety
 
 class MixtureADF(AbstractADF) :
     """Generic class for mixture of simple normalized ADFs

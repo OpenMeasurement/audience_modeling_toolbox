@@ -1,1 +1,0 @@
-from audience_modeling_toolbox.measure.virtualsociety import VirtualSociety
