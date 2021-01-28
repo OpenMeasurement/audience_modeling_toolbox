@@ -1,24 +1,26 @@
+Welcome to the reporsitory for the `audiency_modeling_toolbox` package [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb)._
+
+
 # OpenMeasurement initiative
 
 Advertisers need to measure the performance of their ad campaigns in order to understand their efficiency and optimize future buys.  However, as the advertising landscape has fragmented across multiple platforms and devices, the ability to measure true “deduplicated” cross-media reach and frequency has become more difficult.  At the same time, living in the information age almost all viewership activities can be logged.  It is therefore reasonable to begin to imagine the possibility of a universal, all-inclusive, reach and frequency deduplication report across all media.  The major obstacle to achieving this goal is issues with sharing viewership data.
 
 Currently the ad viewership data is owned by the publishers. This means that the necessary first step to achieve true cross-media measurement is the ability to aggregate ad viewership data across multiple publishers. However, there are many technical, legal and other obstacles to achieve this. First, important and potentially sensitive information about individual users can be revealed in the joined data. In addition, publishers usually do not trust sharing their valuable viewership data with their competitors. The situation is even more complicated for larger companies, where the legalities concerning the user privacy makes the process of sharing ad viewership logs much more involved. As a result, we need a privacy-preserving framework for ad data collection across multiple parties.
 
-We aspire to provide the following
+The OpenMeasurement Initiative endeavors to address the above issues.  We believe that any successful cross screen measurement solution must be fully open source to ensure trust among advertisers, content creators, and consumers as well as facilitating collaboration between many parties.  Our latest solution simulates the activity of real society through virtual societies, thus ensuring individual user privacy.  We aspire to provide the following
  * A completely open framework, to test, verify, and utilize by all the parties.
- * A flexible methodology, to take into account the desired measurement quantities, advertising patterns, targetted audience, as well as the fundamental difference between different type of impressions.
+ * A flexible methodology, to take into account the desired measurement quantities, advertising patterns, targeted audience, as well as the fundamental difference between different types of impressions.
 
-# The virtual society framework for cross-screen measurement
-
-Virtual people are fictitious IDs (numbers) that are possibly equipped with demographics and interests as well as the probability of exposure (activity) in each media. They match the total number as well as the statistical charactristics of the census, and their activities mimics the reach and frequency of the real advertising campaigns. It should not come as a surprise that a model of virtual people should either be almost exactly the actual people (leading exactly correct deduplicated reach and frequency if all people are observed) or is so generic that leads to large errors in measurement, therefor rendering it almost useless.
-
-## The importance of privacy and history references to what is already achieve
+## A review of privacy in ad measurement
 There are multiple methods to approach privacy-preserving advertisement and measurement. A well explored option is to simply add an appropriate amount of noise to the data aggregation. This noise “smears” the outcome of the report  and thus prevents the revealing of any traceable sensitive private information about an individual viewer. It is possible to formulate the exact amount of noise required by means of rigorous mathematical definition -- a key theme in the rising new field of *differential privacy*. However, this addition of noise alway comes with the price of losing accuracy. For example early experiments have shown that if publishers add noise separately to their local data and then aggregate, the final outcome may not possess the required level of accuracy for the frequency estimation.
+
+Another approach is to virtual people. Virtual people are fictitious individuals represented by IDs (numbers) that are possibly equipped with demographics and interests as well as the probability of exposure (activity) in each media. These virtual people match the total number as well as the statistical characteristics of the census, and their activities mimic the reach and frequency of the real advertising campaigns. It should not come as a surprise that a model of virtual people should either be almost exactly the actual people (leading exactly correct deduplicated reach and frequency if all people are observed) or is so generic that leads to large errors in measurement, therefore rendering it almost useless.
 
 However, even before the application of differentially private estimator, there is a need for standardization across different sources of data as well as providing the imputations and possible corrections required for the aggregation stage to flow correctly. This process can be merged with a probabilistic modeling method for the reach and frequency, referred to as the virtual people identifier (VID) assignment. The virtual people are representatives of the ad viewing society. In the assignment process the ad viewing logs are converted to viewing logs or impressions that are assigned to VIDs instead of real users. The VID impressions is designed (and can be made) to be actionable in a sense that advertisers should be allowed to slice tables across demographics, media, and possible time periods and receive a consistent result approximately similar to the true report, that is if the full and appropriately deduplicated viewership data across all media/publishers were known.
 
 It is important to note that, despite the probabilistic nature of VID assignment for ad viewership, this process by itself does not protect individual users privacy and VID impressions logs should not be distributed across publishers without further processing. It has been shown that if only the total deduplicated reach is desired, the VID ad logs may be sent through a set of noisy cardinality estimators, where the individual viewership pattern is protected by adding noise to the aggregated estimators, i.e. differential privacy. The outcome of the noisy estimator can then be unionized to find a final approximate combined result across all data contributors. This approach can be extended to frequency estimation as well but does not in general land into an acceptable approximation margin. These methods can be summarized into the WFA’s cardinality (and frequency) estimation and evaluation framework [cite google secure reach and frequency].
 
+# The virtual society framework for cross-screen measurement
 
 ## Combining the power of *virtual IDs* and WFA *sketches*
 The original suggestion was to use virtual IDs to make sure all the publishers are using the same ID space and then use the WFA sketches on top the VID modeling to provide the desired level of privacy. We believe this approach has the following drawbacks
@@ -36,7 +38,7 @@ The virtual society provides the first level of user privacy as the virtual user
 
 ## A recipe to generate a *virtual society*
 
-_**Want to skip and get your hands dirty instead:** [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/showcase.ipynb)._
+_**Want to skip and get your hands dirty instead:** [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb)._
 
 Below we illustrates the step to create assginment of to virtual societies. 
 
