@@ -269,6 +269,29 @@ class MixtureADF(AbstractADF) :
 
         return VirtualSociety(dataframe, media_cols=media_cols, id_col=id_col)
 
+
+    def info(self) :
+        return pd.DataFrame(
+            [
+                [self.amplitudes[i], type(simple_adf).__name__, *simple_adf.parameters]
+                for i, simple_adf in enumerate(self.simple_adfs)
+            ],
+            columns=['Amplitude', 'Type', *[f'dim={d}' for d in range(self.n_dims)]]
+        )
+
+    def normalization_info(self) :
+        return pd.DataFrame(
+            [
+                ['ADF (sum of amplitudes)', np.sum(self.amplitudes)],
+                *[
+                    [f'Activities along dim d={d}',
+                    np.sum(self.amplitudes * self.parameters[d::self.n_dims])]
+                    for d in range(self.n_dims)
+                ]
+            ],
+            columns=['Distribution', 'total_magnitude']
+        )
+
 class MixtureOfExponentials(MixtureADF) :
     """Class for mixture of exponential ADFs."""
 
