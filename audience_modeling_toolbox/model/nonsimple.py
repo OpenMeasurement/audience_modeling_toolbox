@@ -231,7 +231,7 @@ class MixtureADF(AbstractADF) :
 
         return res
 
-    def generate_virtual_society(self, population_size, media_cols, id_col="vid", mode="random") :
+    def generate_virtual_society(self, population_size, media_cols, id_col="vid", mode="random", rng=None) :
         """Generates a virtual society that follows the ADF.
 
         Args:
@@ -248,8 +248,9 @@ class MixtureADF(AbstractADF) :
             uniform_samples = np.array(list(itertools.product(*xs)))
 
         elif mode == "random" :
-            uniform_samples = np.random.random([population_size, len(media_cols)])
-
+            if rng is None:
+                rng = np.random.default_rng()
+            uniform_samples = rng.random([population_size, len(media_cols)])
 
         activities = np.array([
             self.sample(uniform_samples[i, :])

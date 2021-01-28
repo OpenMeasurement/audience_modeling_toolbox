@@ -102,7 +102,7 @@ class VirtualSociety(AbstractVirtualSociety) :
         return df
 
 
-    def simulate_impressions(self, impressions_size):
+    def simulate_impressions(self, impressions_size, rng=np.random.default_rng()):
         """Simulate the impressions of a campaign given the total GRP for each medium
 
         Args:
@@ -117,7 +117,7 @@ class VirtualSociety(AbstractVirtualSociety) :
 
         impressions_list = []
         for n in range(len(impressions_size)) :
-            impressions = pd.DataFrame(np.random.random(impressions_size[n]), columns=['probability'])
+            impressions = pd.DataFrame(rng.random(impressions_size[n]), columns=['probability'])
             media = self.media_cols[n]
             df_prob = self.probability_ranges(media)
             impressions[self.id_col] = impressions['probability'].apply(lambda p : df_prob[self.id_col].iloc[df_prob['prob_<='].searchsorted(p)])
