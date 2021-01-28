@@ -25,6 +25,9 @@ setuptools.setup(
     license='MIT',
     python_requires='>=3.6',
     install_requires=[
-         "numpy>=1.19",
+        "numpy>=1.19",
+        "pandas",
+        "matplotlib",
+        "scipy"
     ]
 )
