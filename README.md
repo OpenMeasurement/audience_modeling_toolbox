@@ -12,6 +12,17 @@ In [our first research project](https://github.com/OpenMeasurement/virtual_ID_re
  * A completely open framework, to test, verify, and utilize by all the parties.
  * A flexible methodology, to take into account the desired measurement quantities, advertising patterns, targeted audience, as well as the fundamental difference between different types of impressions.
 
+## How is the new approach different?
+Let us explicitly point out the main fundamental differences between our suggestion, the *virtual society modeling* and the previous suggested approaches.
+1) We advocate for a choice of campaign (or advertiser) specific VID modeling. This allows to specifically target the need of each advertiser separately. Of course this is more computationally involved but is a necessary ingredient to any meaningful measurement based on VID modeling.
+
+2) We emphasize on the choice of multidimensional reach-frequency distribution as a source of training for the VID model instead of the suggested *reach* surface. Note that the terminology might be confusing, the reach surface in previous studies refers to the *1+ reach* (the total number of people reach once or more), however we believe that the reach-frequency distribution (or the number of people reached an exact number of times in each media) is a better choice.
+
+3) We suggest a more structured mathematical description of the modeling in order to respect the frequency distribution, specifically the *long tail* of the TV viewership. More specifically, the choice of delta functions does not follow the required tail of the TV viewership distribution.
+
+4) We emphasize on the importance of reporting the reach-frequency distribution in a media-specific (multidimensional) way in order to provide the ability to value impressions on different media in a different fashion. For example, it is important to not treat an impression on full screen TV with an online impression on the same footing.
+
+
 Comparison of the virtual society modeling  from the basic VID + sketch methodology
 
 | What | Virtual society | basic VID + sketch |
