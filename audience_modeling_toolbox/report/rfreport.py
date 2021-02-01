@@ -221,6 +221,31 @@ class RFReport(AbstractRFReport) :
 
         return RFReport(rfdata, self.max_freq, dim_cols, self.reach_col, self.population_size)
 
+    def combine_dims(self, dims, name) :
+        """Combine multiple dimensions into a single dimensions by summing all the frequencies. This method collapses multiple dimensions of the report into one. Note that the combined column will be the last column.
+
+        Args:
+            dims (string or list of strings): The name of the column(s) to be combined.
+            name (string): The name of the new combined dimension.
+
+        Returns:
+            RFReport with the given dimensions collapsed.
+        """
+        
+        cols = dims if isinstance(dims, (list, tuple)) else [dims]
+        if not all(c in self.dim_cols for c in cols) :
+            raise Exception(f"One or more of columns {cols} do not exist in {self.dim_cols}.")
+
+        dim_cols = [c for c in self.dim_cols if c not in cols]
+        dim_cols.append(name)
+
+        rfdata = self.rfdata.copy()
+        rfdata[name] = rfdata[cols].sum(axis=1)
+        rfdata[name] = np.where(rfdata[name] >= self.max_freq, self.max_freq, rfdata[name])
+        rfdata.drop(cols, axis=1)
+        rfdata = rfdata.groupby(dim_cols)[self.reach_col].sum().reset_index()
+
+        return RFReport(rfdata, self.max_freq, dim_cols, self.reach_col, self.population_size)
 
     def plot_1d_reach(self, dim, ax=None) :
         if dim not in self.dim_cols:
