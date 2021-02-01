@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="audience_modeling_toolbox",
-    version="0.0.1",
+    version="0.1",
     author="Amir M Aghaei",
     author_email="amaghaei@videoamp.com",
     package_dir={
