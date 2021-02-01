@@ -57,6 +57,11 @@ We believe that a flexible methodology is only possible if a specific virtual so
 
 The virtual society provides the first level of user privacy as the virtual users do not correspond to actual users, but they only follow the same distribution as our actual society. Moreover, additional levels of privacy could also be combined with the virtual society approach.
 
+The VID assignement starting from the Impressions on each publisher side (here Medium I and Medium II) is shown in the flowchart below.
+
+<img src="./img/VID_flowchart.png" alt="vid_flowchart" width="800"/>
+
+
 ## A recipe to generate a *virtual society*
 
 _**You can skip this part and get your hands dirty instead:** [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb)._
