@@ -93,9 +93,6 @@ _**You can skip this part and get your hands dirty instead:** [try it out for yo
 
 Below we illustrate the steps to create virtual societies and assign cross screen impression logs to them. 
 
-<img src="./img/virtual_assignment.png" alt="virtual_assignment" width="800"/>
-
-
  - **Step I)** The starting point is cross screen empirical measurement data. This can come from a dedicated cross screen measurement panel, or from a pseudo-panel made using identity resolution techniques, where for each publisher at least a fraction of the data has had identities resolved. We aggregate the data along frequency bins for each publisher resulting in a [mutlidimensional reach-frequency distribution] (reach surface).
 
 - **Step II)** The ADF modeling framework then uses the empirical data to model an activity distribution function (ADF). An ADF is a function that captures the rate at which different members of the population or society are exposed to advertisements in each medium. We call the rate of exposure *activity* and hence the function is called the activity distribution function. This is the most challenging and technical part of the process. The mathematical details of the ADF are laid out on our “Mathematical Framework of Audience Modeling” page in the documentation. The important point to understand is that the ADF is a representation of the percentage of the population with each exposure rate or activity. 
