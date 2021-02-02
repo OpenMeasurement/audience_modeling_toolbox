@@ -1,5 +1,5 @@
 # Audience modeling toolbox
-Welcome to the reporsitory for the `audiency_modeling_toolbox` package. This package is currently used to model the audience behavior and generate *virtual societies* as a part of the OpenMeasurement Project.
+This is the repository for the `audiency_modeling_toolbox` package. This package is currently used to model the audience behavior and generate *virtual societies* as a part of the OpenMeasurement Project.
 
 <img src="./img/real_vs_virtual_schematic.png" alt="real_vs_virtual_schematic" width="800"/>
 
