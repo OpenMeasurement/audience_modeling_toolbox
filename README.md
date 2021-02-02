@@ -1,4 +1,4 @@
-Welcome to the reporsitory for the `audiency_modeling_toolbox` package [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb)._
+Welcome to the reporsitory for the `audiency_modeling_toolbox` package [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb).
 
 # The OpenMeasurement initiative
 
@@ -56,6 +56,11 @@ The OpenMeasurement plan is to combine the two levels of methodology into a sing
 We believe that a flexible methodology is only possible if a specific virtual society is tweaked and designed separately for each campaign. Virtual society is simply a table of virtual individuals equipped with certain demographics and/or interests that have a tendency to receive advertisement through different media.  We call this tendency of exposure “activity.” This could be the tendency to generate specific cookie types in the case of digital advertising or the tendency to watch a specific network in the case of TV.
 
 The virtual society provides the first level of user privacy as the virtual users do not correspond to actual users, but they only follow the same distribution as our actual society. Moreover, additional levels of privacy could also be combined with the virtual society approach.
+
+The VID assignement starting from the Impressions on each publisher side (here Medium I and Medium II) is shown in the flowchart below.
+
+<img src="./img/VID_flowchart.png" alt="vid_flowchart" width="800"/>
+
 
 ## A recipe to generate a *virtual society*
 
