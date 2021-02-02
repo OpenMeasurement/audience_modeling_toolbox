@@ -1,4 +1,4 @@
-Welcome to the reporsitory for the `audiency_modeling_toolbox` package [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb)._
+Welcome to the reporsitory for the `audiency_modeling_toolbox` package [try it out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb).
 
 # The OpenMeasurement initiative
 
