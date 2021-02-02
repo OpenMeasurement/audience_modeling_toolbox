@@ -140,6 +140,7 @@ class MixtureADF(AbstractADF) :
         self.amplitudes = np.array(ps_vector[:n])
         self.parameters = np.array(ps_vector[n:])
 
+        constraints = self.normal_deviations()
         residuals = []
         for report in reports :
             reaches, freqs = report.reach_freq_values(normalized=True, max_freq=report.max_freq)
@@ -147,7 +148,7 @@ class MixtureADF(AbstractADF) :
             ## NOTE: It is assumed that the ftrunc_reach returns frequencies in the itertools.product order...
             residuals.append(reaches - self.ftrunc_reach(grs, report.max_freq))
 
-        return np.array(residuals).flatten()
+        return np.hstack([constraints, np.array(residuals).flatten()])
 
     def train(self, *reports, what="reach_truncate") :
         """trains the mixture ADF against a set of `reports`
@@ -290,18 +291,37 @@ class MixtureADF(AbstractADF) :
             columns=['Amplitude', 'Type', *[f'dim={d}' for d in range(self.n_dims)]]
         )
 
+    def magnitude(self) :
+        """Return the magnitude or total integral of the ADF whic is the sum of amplitudes
+        """
+
+        return np.sum(self.amplitudes)
+
+    def extents(self, d=None) :
+        """Returns the extent or total expected probability across any dimension.
+        
+        Args:
+            d (int) : the dimension (axis) across which to calculate the extent of the ADF.
+        """
+        if d is None:
+            return [self.extents(dim) for dim in range(self.n_dims)]
+        else :
+            return np.sum(self.amplitudes * self.parameters[d::self.n_dims])
+
     def normalization_info(self) :
         return pd.DataFrame(
             [
-                ['ADF (sum of amplitudes)', np.sum(self.amplitudes)],
+                ['ADF (sum of amplitudes)', self.magnitude()],
                 *[
                     [f'Activities along dim d={d}',
-                    np.sum(self.amplitudes * self.parameters[d::self.n_dims])]
+                    self.extents(d)]
                     for d in range(self.n_dims)
                 ]
             ],
             columns=['Distribution', 'total_magnitude']
         )
+    def normal_deviations(self) :
+        return np.array([self.magnitude(), *self.extents()]) - np.ones(1 + self.n_dims)
 
 class MixtureOfExponentials(MixtureADF) :
     """Class for mixture of exponential ADFs."""
