@@ -202,11 +202,22 @@ class MixtureADF(AbstractADF) :
         )
 
     def cdf(self, X) :
+        """The cumulative distribution function (only for 1D ADFs)
+        """
         return np.tensordot(
             self.amplitudes,
             np.array([simple_adf.cdf(X) for simple_adf in self.simple_adfs]),
             axes=([0], [0])
         )
+
+    def inverse_cdf(self, r) :
+        """The inverse cumulative distribution function (only for 1D ADFs) 
+        """
+        
+        if not 0 <= r < 1.0 :
+            raise Exception(f"The domain of the 1D CDF is [0, 1) but value is {r}")
+
+        return scipy.optimize.root(lambda X: self.cdf(X) - r, 0.0).x[0]
 
     def sample(self, uniform_sample) :
         """sample the ADF using a given uniform sampling
@@ -224,7 +235,7 @@ class MixtureADF(AbstractADF) :
 
         res = np.zeros(self.n_dims)
         if self.n_dims == 1 :
-            res[0] = scipy.optimize.root(lambda X: self.cdf(X) - rs[0], 0.0).x[0]
+            res[0] = self.inverse_cdf(rs[0])
         else :
             res[0] = self.marginal(dims=[0]).sample(rs[0])
             res[1:] = self.conditional(dims=[0], values=rs[0]).sample(rs[1:])
@@ -369,3 +380,9 @@ class MixtureOfDeltas(MixtureADF) :
             simple_adfs.append(NormalDeltaADF(positions=np.ones(n_dims)))
 
         return cls(amplitudes, simple_adfs)
+
+    def inverse_cdf(self, r) :
+        if not 0 <= r < 1.0 :
+            raise Exception(f"The domain of the 1D CDF is [0, 1) but value is {r}")
+
+        return scipy.optimize.root(lambda X: self.cdf(X) - r, 0.0).x[0]
