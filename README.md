@@ -5,6 +5,8 @@ This is the repository for the `audiency_modeling_toolbox` package. This package
 
 You can [try out for yourself on a google colab notebook](https://colab.research.google.com/github/OpenMeasurement/virtual_society_modeling_framework/blob/main/notebooks/virtual_society_basic_illustration.ipynb).
 
+Check out our FAQ from other industry experts asking questions on this repo [here](https://github.com/OpenMeasurement/audience_modeling_toolbox/wiki/FAQ).
+
 # The OpenMeasurement Project
 
 We believe every human on the planet should have free access to the world’s information and content. This is powered by a three way value exchange between a media owner publishing free content, a consumer consuming it and an advertiser paying for the chance to connect with the media owner’s audience. The underpinning of this value exchange relies on having an independent auditing, measurement and optimization layer to power the transaction between the advertiser and media owner. Today the industry standard tools for advertising and media measurement and optimization are usually designed where increased personalization, higher advertising return on investment and increased media owner revenues often comes with negative trade off for consumer privacy or security risks of leaking private data. We envision a world where this doesn't have to be the case - a world where consumer privacy, security, and governance are incorporated into the fabric of the codebase while enabling the necessary business use-cases to effectively keep the world’s information and content free for everyone.
