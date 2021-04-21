@@ -59,10 +59,12 @@ def _plot_2d_reach(data, dims, ax=None) :
     data_size = data.shape[0]
     tickrange, ticklabels = _freq_ticks(max_freq=data_size, jump=2)
 
+    vmax = np.max(data)
     im = ax.imshow(data,
-                   norm=matplotlib.colors.LogNorm(),
-                   vmin=1,
-                   vmax=2.e3,
+                   norm=matplotlib.colors.LogNorm(
+                       vmin=1,
+                       vmax=vmax
+                   ),
                    origin="lower"
     )
     ax.set_ylabel(dims[0])
