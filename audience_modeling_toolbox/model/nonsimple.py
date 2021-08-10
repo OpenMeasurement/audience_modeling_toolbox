@@ -401,8 +401,78 @@ class MixtureOfDeltas(MixtureADF) :
 
         return cls(amplitudes, simple_adfs)
 
-    def inverse_cdf(self, r) :
+    def sample(self, uniform_sample) :
+        """sample the ADF using a given uniform sampling
+
+        Args:
+            uniform_sample (numpy array) : a sample of numbers from uniform distribution of [0, 1)
+
+        Returns:
+            The corresponding sample (to the input sample that was chosen from uniform) from the ADF.
+        """
+
+        rs = np.array([uniform_sample]) if np.isscalar(uniform_sample) else np.array(uniform_sample)
+        if rs.shape[-1] != self.n_dims :
+            raise Exception("dimensions don't match!")
+
+        res = np.zeros(self.n_dims)
+        if self.n_dims == 1 :
+            res[0] = self.inverse_cdf(rs[0])
+            return res
+        else :
+            index = self.marginal(dims=[0]).inverse_cdf_index(rs[0])
+            return self.simple_adfs[index].parameters
+    
+    def inverse_cdf_index(self, r) :
+        """Returns the index of the delta function for which `r` corresponds to inverse CDF."""
         if not 0 <= r < 1.0 :
             raise Exception(f"The domain of the 1D CDF is [0, 1) but value is {r}")
 
-        return scipy.optimize.root(lambda X: self.cdf(X) - r, 0.0).x[0]
+        if self.n_dims > 1 :
+            raise Exception(f"""only 1D ADF have inverser_cdf function implemented""")
+
+        # sort by positions, find the cumulative of amplitudes and search where `r` fits
+        perm = np.argsort(self.parameters)
+        index = np.searchsorted(np.cumsum(self.amplitudes[perm]), r)
+        return perm[index]
+    
+    def inverse_cdf(self, r) :
+        return self.parameters[self.inverse_cdf_index(r)]
+
+    def generate_virtual_society(self, population_size, media_cols, id_col="vid", mode="random", rng=None) :
+        """Generates a virtual society that follows the ADF.
+
+        Args:
+            population_size (int) : the size of the virtual population.
+            media_cols (list of string) : the list of media labels.
+        """
+
+        if self.n_dims != len(media_cols) :
+            raise Exception(f"Number of media lables {media_cols} don't match the dimension.")
+
+        if mode == "uniform" :
+            N = int(population_size)
+            xs = np.linspace(1/(N+1), 1, N+1)[:-1]
+            uniform_samples = np.array(list(itertools.product(xs, [1.])))
+
+        elif mode == "random" :
+            if rng is None:
+                rng = np.random.default_rng()
+            uniform_samples = rng.random([population_size, len(media_cols)])
+
+        activities = np.array([
+            self.sample(uniform_samples[i, :])
+            for i in range(population_size)
+        ])
+
+        ## TODO: Document the normalization of activities in more detail
+        #normalizing activities
+        factors = np.reshape(np.sum(activities, axis=0) / population_size, [1, -1])
+        activities = activities / factors
+
+        dataframe = pd.concat([
+            pd.DataFrame(np.arange(population_size, dtype='int'), columns=[id_col]),
+            pd.DataFrame(activities, columns=media_cols)
+        ], axis=1)
+
+        return VirtualSociety(dataframe, media_cols=media_cols, id_col=id_col)

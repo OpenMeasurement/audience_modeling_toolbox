@@ -239,3 +239,18 @@ class NormalDeltaADF(AbstractADF) :
 
     def _evaluate(self, xs) :
         pass
+
+    def marginal(self, dims) :
+        return type(self)(self.parameters[dims])
+
+    def cdf(self, value) :
+        if self.n_dims > 1 :
+            raise Exception("cdf method is only defined for a single dimension.")
+
+        pass
+
+    def average_activity(self, dim=None) :
+        if dim is None :
+            return self._positions
+        else :
+            return self._positions[dim]
