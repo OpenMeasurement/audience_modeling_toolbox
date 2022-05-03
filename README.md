@@ -17,70 +17,30 @@ Currently the ad viewership data is primarily owned by the publishers. This mean
 
 The OpenMeasurement Project is inviting engineers, data scientists and researchers to come together to deliver the open source dream without dilution - open and free to anyone who wants to join and an environment where the best ideas win versus political gains or optimizing for one companies benefits. We believe that any future privacy by design cross screen measurement solution must be fully open source, with an open-core ecosystem around it, to ensure trust among advertisers, content creators, and consumers as well as facilitating collaboration between many parties.  
 
-In [our first research project](https://github.com/OpenMeasurement/virtual_ID_research) in open measurement we built upon the basic Virtual Identifier (VID) modeling, see also the Google tech report.  We extend the virtual people modeling to virtual society modeling improving the privacy and accuracy of reach frequency measurements on our virtual societies relative to the VID framework.  This latest solution simulates the activity of real society through virtual societies, thus ensuring individual user privacy.  We aspire to provide the following
+In [our first research project](https://github.com/OpenMeasurement/virtual_ID_research) in open measurement we built upon the basic Virtual Identifier (VID) modeling, see also the Google tech report.  We extend the virtual people modeling to handle the situation whre there are no persistant identifiers to apply the original approach. The virtual society modeling aspires to complement the reach and frequency distrbution when no persistent identifiers are available. This approach simulates the activity of real society through virtual societies, thus ensuring individual user privacy.  We aspire to provide the following
  * A completely open framework, to test, verify, and utilize by all the parties.
  * A flexible methodology, to take into account the desired measurement quantities, advertising patterns, targeted audience, as well as the fundamental difference between different types of impressions.
 
 ## How is the new approach different?
 Let us explicitly point out the main fundamental differences between our suggestion, the *virtual society modeling* and the previous suggested approaches.
-1) We advocate for a choice of campaign (or advertiser) specific VID modeling. This allows to specifically target the need of each advertiser separately. Of course this is more computationally involved but is a necessary ingredient to any meaningful measurement based on VID modeling.
 
-2) We emphasize on the choice of multidimensional reach-frequency distribution as a source of training for the VID model instead of the suggested *reach* surface. Note that the terminology might be confusing, the reach surface in previous studies refers to the *1+ reach* (the total number of people reach once or more), however we believe that the reach-frequency distribution (or the number of people reached an exact number of times in each media) is a better choice.
+1) The virtual society modeling is using impression based probabilistic modeling in comparison with using persistant identifiers.
 
-3) We suggest a more structured mathematical description of the modeling in order to respect the frequency distribution, specifically the *long tail* of the TV viewership. More specifically, the choice of delta functions does not follow the required tail of the TV viewership distribution.
+2) The virtual society advocates for a choice of campaign (or advertiser) specific modeling. This could potentially allow for specifically targeting the need of each advertiser separately. Of course this is more computationally involved but is a necessary ingredient where persisternt identifiers are not available.
 
-4) We emphasize on the importance of reporting the reach-frequency distribution in a media-specific (multidimensional) way in order to provide the ability to value impressions on different media in a different fashion. For example, it is important to not treat an impression on full screen TV with an online impression on the same footing.
+3) The virtual society use the choice of multidimensional reach-frequency distribution as a source of training for the VID model instead of the *reach* surface. Note that the terminology might be confusing, the reach surface in previous studies refers to the *1+ reach* (the total number of people reach once or more), however we believe that the reach-frequency distribution (or the number of people reached an exact number of times in each media) is a better choice when impression based modeling due to lack of persistent identifiers is desired.
 
-
-Comparison of the virtual society modeling  from the basic VID + sketch methodology
-
-| What | Virtual society | basic VID + sketch |
-| :-: | :-:| :-: |
-| Aggregate reach in regular campaigns | Yes | Yes |
-| Aggregate reach for outlier campaigns | Yes | Yes, but large error |
-| Campaign specific granular info | Yes | No |
-| Faithful to the frequency distribution | Yes | No |
-| Possible to treat impressions differently | Yes | No|
-| Controllable user privacy level | Yes, with simple tweaks | Yes |
-| Simplicity on the publisher side | Yes | Yes, but mutliple levels|
-
-## Example of error generated in the VID assignement process
-For comparison we also include the errors generated by the VID modeling for a simulated campaign of 10000 individuals. We have chosen the GRP of `400%` and `800%` across `Medium I` and `medium II` respectively. Thefore the average frequency is `4.0` and `8.0` across each medium. You can follow the same calculations yourself in the notebook.
-
-| Parameter | Measurement report | Virtual Society | Virtual Society error | basic VID | basic VID error |
-| :-: | :-: | :-: | :-: | :-: | :-: |
-| 1+ reach | 9675 | 9712 | 0.3 % | 9713 | 0.3 % |
-| Exclusive reach on I | 1016 | 974  | 4.1 % | 649 | 36.1 % |
-| Exclusive reach on II | 2028  | 1993 | 1.7 % |1831 | 9.7 % | 
-| Overlap between I, II | 6631 |6805 | 2.6 % |7231 | 9.05 %  |
-
-The figures below show the detail errors for the bins in the frequency. First for the error in full two dimensional reach-frequency surface
-
-<img src="./img/error_2D_compare.png" alt="error_2D_compare" width="800"/>
-
-as well as the total (all media) frequency distribution errors
-
-<img src="./img/error_1D_total_compare.png" alt="error_1D_total_compare" width="800"/>
-
-The important point to note here is a good error rate only on the deduplicated reach is not enough. As you see, both methodologies get the total reach almost exactly correct.
+We emphasize that since the virtual society methodology is using impression based modeling and does not make use of persistent identifiers, the virtual society approach is not directly comparable with the original VID modeling. 
 
 ## A review of privacy in ad measurement
 There are multiple methods to approach privacy-preserving ad measurement. A well explored option is to simply add an appropriate amount of noise to the data aggregation. This noise “smears” the outcome of the report  and thus prevents the revealing of any traceable sensitive private information about an individual viewer. It is possible to formulate the exact amount of noise required by means of rigorous mathematical definition -- a key theme in the rising new field of differential privacy, see [Dwork2006](https://www.microsoft.com/en-us/research/publication/differential-privacy/) for a review. However, this addition of noise alway comes with the price of losing accuracy. For example early experiments have shown that if publishers add noise separately to their local data and then aggregate, the final outcome may not possess the required level of accuracy for the frequency estimation [Kreuter2020](https://research.google/pubs/pub49177/).
 
 Another approach is to use virtual people. Virtual people are fictitious individuals represented by IDs (numbers) that are possibly equipped with demographics and interests as well as the probability of exposure (activity) in each media. These virtual people match the total number as well as the statistical characteristics of the census, and their activities mimic the reach and frequency of the real advertising campaigns.  Mapping impressions to VIDs creates a possible layer of privacy for ad campaigns and provides a common identity space for different publishers to share.  However, a problem with a general model of virtual people is that they would either be almost exactly the actual people (leading exactly correct deduplicated reach and frequency if all people are observed) or too generic leading to large measurement errors, resulting in the inability to apply the model to different campaigns. As we will discuss, the solution to this problem is to generate a separate virtual society of people for each ad campaign.
 
-It is important to note that, despite the probabilistic nature of VID assignment for ad viewership, this process by itself does not protect individual users privacy and VID impressions logs should not be distributed across publishers without further processing.  If we only desire the aggregated total reach, we can use a set of noisy cardinality estimators on top of the VID ad logs.  This process, known as differential privacy, protects the individual viewership pattern.  Multiple parties can combine their differentially private results to obtain the overall deduplicated reach. This approach can be extended to frequency estimation as well but does not generally result in an acceptably low amount of error (in our opinion). These methods are under active development in the [WFA repository](https://github.com/world-federation-of-advertisers).
-
-We believe that this approach of using virtual IDs as a common ID space and then using WFA sketches on top of the VID modeling to provide the desired level of privacy has the following drawbacks:
-- A generic VID modeling for all possible scenarios cannot have the desired accuracy
-- A generic VID modeling does not respect the specific frequency distribution properties of different media
-- The advertised accuracy of the WFA sketches is poor
-- When WFA sketches are applied on the VID modeling, the errors in the frequency distribution and even aggregate information, such as total reach, are quite large
-
-The OpenMeasurement plan is to combine the two levels of methodology into a single approach that is specific for each application. These models, called *virtual societies*, are designed to respect the cross-media frequency distribution, and provide the desired level of privacy whenever necessary. Moreover, the error for the outcome of a virtual society modeling is much more controllable compared to WFA methodology of sketches on top of a VID.
+It is important to note that, this process by itself does not protect individual users privacy and VID impressions logs should not be distributed across publishers without further processing.  If we only desire the aggregated total reach, we can use a set of noisy cardinality estimators on top of the VID ad logs.  This process, known as differential privacy, protects the individual viewership pattern.  Multiple parties can combine their differentially private results to obtain the overall deduplicated reach. This approach can be extended to frequency estimation as well but does not generally result in an acceptably low amount of error (in our opinion). These methods are under active development in the [WFA repository](https://github.com/world-federation-of-advertisers).
 
 ## Virtual Societies
-We believe that a flexible methodology is only possible if a specific virtual society is tweaked and designed separately for each campaign. Virtual society is simply a table of virtual individuals equipped with certain demographics and/or interests that have a tendency to receive advertisement through different media.  We call this tendency of exposure “activity.” This could be the tendency to generate specific cookie types in the case of digital advertising or the tendency to watch a specific network in the case of TV.
+When persistent identifiers are not available, a flexible methodology is only possible if a specific virtual society is tweaked and designed separately for each campaign. Virtual society is simply a table of virtual individuals equipped with certain demographics and/or interests that have a tendency to receive advertisement through different media.  We call this tendency of exposure “activity.” This could be the tendency to generate specific cookie types in the case of digital advertising or the tendency to watch a specific network in the case of TV.
 
 The virtual society provides the first level of user privacy as the virtual users do not correspond to actual users, but they only follow the same distribution as our actual society. Moreover, additional levels of privacy could also be combined with the virtual society approach.
 
